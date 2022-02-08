@@ -1,5 +1,6 @@
 const { getOne, getAll } = require('../repository/index');
-const { addUsers } = require('../neo4j/neo4j.service');
+const { addUsers, deleteAll } = require('../neo4j/neo4j.service');
+const res = require('express/lib/response');
 
 module.exports = {
   getUsers: async (request, response) => {
@@ -17,5 +18,14 @@ module.exports = {
     });
     const neo4jdata = await addUsers(users);
     return response.status(200).json(neo4jdata);
+  },
+  deleteAllFromNeo4j: async (request, response) => {
+    try {
+      await deleteAll();
+      return response.status(200).json({msg: 'deleted'});
+    } catch(error) {
+      console.log(error);
+      return response.status(500).json({msg: 'internal server error'});
+    }
   }
 }

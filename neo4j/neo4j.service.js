@@ -9,6 +9,12 @@ module.exports = {
       promises.push(executeWriteQuery(createUser(), user));
     }
     return Promise.all(promises);
+  },
+  deleteAll() {
+    return executeWriteQuery(
+      'MATCH (n) DETACH DELETE n',
+      {},
+    );
   }
 }
 
